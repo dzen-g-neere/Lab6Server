@@ -1,12 +1,13 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.WrongArgumentException;
 import utility.CollectionManager;
 
 /**
  * This is command 'remove_greater_key'. Remove elements which have key that is more than given.
  */
-public class RemoveGreaterKey extends AbstractCommand implements Command{
+public class RemoveGreaterKey extends AbstractCommand implements Command {
     CollectionManager collectionManager;
 
     public RemoveGreaterKey(CollectionManager collectionManager) {
@@ -18,13 +19,13 @@ public class RemoveGreaterKey extends AbstractCommand implements Command{
      * Execute of 'remove_greater_key' command.
      */
     @Override
-    public void execute(String argument) {
+    public String execute(String argument) {
 
         try {
             if (argument.isEmpty()) throw new WrongArgumentException();
-            collectionManager.removeGreaterKey(argument);
-        } catch (WrongArgumentException e){
-            System.out.println("Некорректный аргумент");
+            return collectionManager.removeGreaterKey(argument);
+        } catch (WrongArgumentException e) {
+            return "Некорректный аргумент";
         }
     }
 }

@@ -3,7 +3,7 @@ package commands;
 /**
  * Abstract commands.Command class contains Object methods, name and description.
  */
-abstract class AbstractCommand implements Command {
+abstract class AbstractCommand {
     private String name;
     private String description;
 

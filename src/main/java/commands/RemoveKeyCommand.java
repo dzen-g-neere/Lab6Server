@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.WrongArgumentException;
 import utility.CollectionManager;
 
@@ -17,12 +18,12 @@ public class RemoveKeyCommand extends AbstractCommand implements Command{
      * Execute of 'remove_key' command.
      */
     @Override
-    public void execute(String argument) {
+    public String execute(String argument) {
         try {
             if (argument.isEmpty()) throw new WrongArgumentException();
-            collectionManager.removeKey(argument);
+            return collectionManager.removeKey(argument);
         }catch (WrongArgumentException e){
-            System.out.println("Некорректный аргумент");
+            return"Некорректный аргумент";
         }
 
     }

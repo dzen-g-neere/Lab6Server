@@ -1,6 +1,7 @@
 package utility;
 
 import commands.*;
+import connection.ExchangeClass;
 import exceptions.IncorrectScriptException;
 
 import java.util.ArrayList;
@@ -85,9 +86,9 @@ public class CommandManager {
     /**
      * Start execute of 'insert' command.
      */
-    public void insertLWToCollection(String arg) throws IncorrectScriptException {
+    public String insertLWToCollection(String arg) throws IncorrectScriptException {
         try {
-            insertCommand.execute(arg);
+            return insertCommand.execute(arg);
         } catch (IncorrectScriptException e) {
             throw new IncorrectScriptException();
         }
@@ -97,72 +98,75 @@ public class CommandManager {
     /**
      * Start execute of 'help' command.
      */
-    public void help(String argument) {
-        if (argument.equals("")) {
-            helpCommand.execute(argument);
+    public String help(String arg) {
+        if (arg.equals("")) {
+            StringBuilder s = new StringBuilder();
+            helpCommand.execute(arg);
             for (Command command : commandArrayList) {
-                System.out.println(command.getName() + command.getDescription());
+                s.append(command.getName()).append(command.getDescription()).append("\n");
             }
+            return s.toString();
         } else {
-            helpCommand.execute(argument);
+            helpCommand.execute(arg);
         }
+        return "";
     }
 
     /**
      * Start execute of 'show' command.
      */
-    public void showCollection(String arg) {
-        showCommand.execute(arg);
+    public String showCollection(String arg) {
+        return showCommand.execute(arg);
     }
 
     /**
      * Start execute of 'info' command.
      */
-    public void info(String arg) {
-        infoCommand.execute(arg);
+    public String info(String arg) {
+        return infoCommand.execute(arg);
     }
 
     /**
      * Start execute of 'remove_key' command.
      */
-    public void remove_key(String s) {
-        removeKeyCommand.execute(s);
+    public String remove_key(String arg) {
+        return removeKeyCommand.execute(arg);
     }
 
     /**
      * Start execute of 'clear' command.
      */
-    public void clear(String s) {
-        clearCommand.execute(s);
+    public String clear(String arg) {
+        return clearCommand.execute(arg);
     }
 
     /**
      * Start execute of 'save' command.
      */
-    public void save(String s) {
-        saveCommand.execute(s);
+    public String save(String arg) {
+        return saveCommand.execute(arg);
     }
 
     /**
      * Start execute of 'execute_script' command.
      */
-    public void execute_script(String s) {
-        executeScriptCommand.execute(s);
+    public String execute_script(String arg) {
+        return executeScriptCommand.execute(arg);
     }
 
     /**
      * Start execute of 'exit' command.
      */
-    public void exit(String s) {
-        exitCommand.execute(s);
+    public String exit(String arg) {
+        return exitCommand.execute(arg);
     }
 
     /**
      * Start execute of 'replace_if_greater' command.
      */
-    public void replace_if_greater(String s) throws IncorrectScriptException{
+    public String replace_if_greater(String arg) throws IncorrectScriptException{
         try {
-            replaceIfGreaterCommand.execute(s);
+            return replaceIfGreaterCommand.execute(arg);
         } catch (IncorrectScriptException e) {
             throw new IncorrectScriptException();
         }
@@ -171,9 +175,9 @@ public class CommandManager {
     /**
      * Start execute of 'replace_if_lowe' command.
      */
-    public void replace_if_lowe(String s) throws IncorrectScriptException{
+    public String replace_if_lowe(String arg) throws IncorrectScriptException{
         try {
-            replaceIfLowerCommand.execute(s);
+            return replaceIfLowerCommand.execute(arg);
         } catch (IncorrectScriptException e) {
             throw new IncorrectScriptException();
         }
@@ -182,35 +186,35 @@ public class CommandManager {
     /**
      * Start execute of 'remove_greater_key' command.
      */
-    public void remove_greater_key(String s) {
-        removeGreaterKey.execute(s);
+    public String remove_greater_key(String arg) {
+        return removeGreaterKey.execute(arg);
     }
 
     /**
      * Start execute of 'group_counting_by_creation_date' command.
      */
-    public void group_counting_by_creation_date(String s) {
-        groupCountingByCreationDateCommand.execute(s);
+    public String group_counting_by_creation_date(String arg) {
+        return groupCountingByCreationDateCommand.execute(arg);
     }
 
     /**
      * Start execute of 'filter_greater_than_average_point' command.
      */
-    public void filter_greater_than_average_point(String s) {
-        filterGreaterThanAveragePointCommand.execute(s);
+    public String filter_greater_than_average_point(String arg) {
+        return filterGreaterThanAveragePointCommand.execute(arg);
     }
 
     /**
      * Start execute of 'print_descending' command.
      */
-    public void print_descending(String s) {
-        printDescendingCommand.execute(s);
+    public String print_descending(String arg) {
+        return printDescendingCommand.execute(arg);
     }
 
     /**
      * Start execute of 'update' command.
      */
-    public void updateID(String s) throws IncorrectScriptException{
-        updateIDCommand.execute(s);
+    public String updateID(String arg) throws IncorrectScriptException{
+        return updateIDCommand.execute(arg);
     }
 }

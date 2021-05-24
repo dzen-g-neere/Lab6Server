@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.IncorrectScriptException;
 import labwork.LabWork;
 import utility.CollectionManager;
@@ -22,11 +23,11 @@ public class UpdateIDCommand extends AbstractCommand implements Command {
      * Execute of 'update' command.
      */
     @Override
-    public void execute(String argument) throws IncorrectScriptException {
+    public String execute(String argument) throws IncorrectScriptException {
         try {
             int i = Integer.parseInt(argument);
             LabWork labWork = collectionManager.getByKey(argument);
-            collectionManager.addLabWorkToCollection(
+            return collectionManager.addLabWorkToCollection(
                     argument,
                     new LabWork(
                             labWork.getId(),
@@ -41,10 +42,10 @@ public class UpdateIDCommand extends AbstractCommand implements Command {
                     )
             );
         } catch (NumberFormatException e) {
-            System.out.println("ID должен быть целым числом");
+            return "ID должен быть целым числом";
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Непредвиденная ошибка");
+            return "Непредвиденная ошибка";
         }
     }
 }

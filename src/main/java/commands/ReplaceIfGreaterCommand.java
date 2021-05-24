@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.IncorrectScriptException;
 import exceptions.WrongArgumentException;
 import labwork.LabWork;
@@ -23,7 +24,7 @@ public class ReplaceIfGreaterCommand extends AbstractCommand implements Command 
      * Execute of 'replace_if_greater' command.
      */
     @Override
-    public void execute(String argument) throws IncorrectScriptException {
+    public String execute(String argument) throws IncorrectScriptException {
 
 
         LabWork labWorkOld;
@@ -44,10 +45,11 @@ public class ReplaceIfGreaterCommand extends AbstractCommand implements Command 
             if (labWorkNew.compareTo(labWorkOld) > 0) {
                 collectionManager.removeKey(argument);
                 collectionManager.addLabWorkToCollection(labWorkNew.getName(), labWorkNew);
-                System.out.println("Замена успешна");
+                return "Замена успешна\n";
             }
+            return "Заменяемый элемент больше нового. Замена не произведенаю\n";
         } catch (WrongArgumentException e) {
-            System.out.println("Аргумент " + argument + " некорректен");
+            return "Аргумент " + argument + " некорректен\n";
         }
     }
 }

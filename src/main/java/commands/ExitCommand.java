@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.WrongArgumentException;
 
 /**
@@ -14,7 +15,7 @@ public class ExitCommand extends AbstractCommand implements Command{
      * Execute of 'exit' command.
      */
     @Override
-    public void execute(String argument) {
+    public String execute(String argument) {
         try {
             if (!argument.isEmpty()) {
                 throw new WrongArgumentException();
@@ -26,5 +27,6 @@ public class ExitCommand extends AbstractCommand implements Command{
         } catch (Exception e) {
             System.out.println("Ошибка. Повторите ввод.");
         }
+        return "";
     }
 }

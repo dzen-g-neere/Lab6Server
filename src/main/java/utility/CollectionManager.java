@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.Vector;
 
 public class CollectionManager {
+    private static int idCounter;
     private HashMap<String, LabWork> labWorks = new HashMap<String, LabWork>();
     private LocalDate creationDate;
     private FileManager fileManager;
@@ -31,90 +32,90 @@ public class CollectionManager {
         }
     }
 
-    public void addLabWorkToCollection(String key, LabWork labWork) {
+    public String addLabWorkToCollection(String key, LabWork labWork) {
         labWorks.put(key, labWork);
+        return "Элемент успешно добавлен.\n";
     }
 
-    public void labWorkToOutput(String key, LabWork labWork) {
-        System.out.println("key: " + key);
-        System.out.println("id: " + labWork.getId());
-        System.out.println("    Название: " + labWork.getName());
-        System.out.println("     Координаты:");
-        System.out.println("        x: " + labWork.getCoordinates().getX());
-        System.out.println("        y: " + labWork.getCoordinates().getY());
-        System.out.println("    Дата создания: " + labWork.getCreationDate());
-        System.out.println("    Минимальный балл: " + labWork.getMinimalPoint());
-        System.out.println("    Мин. балл за л.к.: " + labWork.getPersonalQualitiesMinimum());
-        System.out.println("    Средний балл: " + labWork.getAveragePoint());
+    public String labWorkToOutput(String key, LabWork labWork) {
+        String answer = "";
+        answer += "key: " + key + "\n";
+        answer += "id: " + labWork.getId() + "\n";
+        answer += "    Название: " + labWork.getName() + "\n";
+        answer += "     Координаты:" + "\n";
+        answer += "        x: " + labWork.getCoordinates().getX() + "\n";
+        answer += "        y: " + labWork.getCoordinates().getY() + "\n";
+        answer += "    Дата создания: " + labWork.getCreationDate() + "\n";
+        answer += "    Минимальный балл: " + labWork.getMinimalPoint() + "\n";
+        answer += "    Мин. балл за л.к.: " + labWork.getPersonalQualitiesMinimum() + "\n";
+        answer += "    Средний балл: " + labWork.getAveragePoint() + "\n";
         try {
-            System.out.println("    Сложность: " + labWork.getDifficulty().getName());
+            answer += "    Сложность: " + labWork.getDifficulty().getName() + "\n";
         } catch (Exception e) {
-            System.out.println("    Сложность: " + null);
+            answer += "    Сложность: " + null + "\n";
         }
         Person author = labWork.getAuthor();
         if (author != null) {
             Location authorLocation = author.getLocation();
-            System.out.println("    Автор:");
-            System.out.println("        Имя: " + author.getName());
-            System.out.println("        Рост: " + author.getHeight());
+            answer += "    Автор:" + "\n";
+            answer += "        Имя: " + author.getName() + "\n";
+            answer += "        Рост: " + author.getHeight() + "\n";
             try {
-                System.out.println("        Цвет глаз: " + author.getEyeColor().getName());
+                answer += "        Цвет глаз: " + author.getEyeColor().getName() + "\n";
             } catch (Exception e) {
-                System.out.println("        Цвет глаз: " + null);
+                answer += "        Цвет глаз: " + null + "\n";
             }
             try {
-                System.out.println("        Цвет волос: " + author.getHairColor().getName());
+                answer += "        Цвет волос: " + author.getHairColor().getName() + "\n";
             } catch (Exception e) {
-                System.out.println("        Цвет волос: " + null);
+                answer += "        Цвет волос: " + null + "\n";
             }
             try {
-                System.out.println("        Национальность: " + author.getNationality().getName());
+                answer += "        Национальность: " + author.getNationality().getName() + "\n";
             } catch (Exception e) {
-                System.out.println("        Национальность: " + author.getNationality().getName());
+                answer += "        Национальность: " + author.getNationality().getName() + "\n";
             }
-            System.out.println("        Местоположение: ");
-            System.out.println("            Локация: " + authorLocation.getName());
-            System.out.println("                x: " + authorLocation.getX());
-            System.out.println("                y: " + authorLocation.getY());
-            System.out.println("                z: " + authorLocation.getZ());
+            answer += "        Местоположение: " + "\n";
+            answer += "            Локация: " + authorLocation.getName() + "\n";
+            answer += "                x: " + authorLocation.getX() + "\n";
+            answer += "                y: " + authorLocation.getY() + "\n";
+            answer += "                z: " + authorLocation.getZ() + "\n";
         } else
-            System.out.println("    Автор: null");
+            answer += "    Автор: null" + "\n" + "\n";
+        return answer;
     }
 
-    public void showCollection() {
+    public String showCollection() {
+        String answer;
         try {
             if (!labWorks.isEmpty()) {
                 Set<Map.Entry<String, LabWork>> labsForOutput = labWorks.entrySet();
+                StringBuilder answerBuilder = new StringBuilder();
                 for (Map.Entry<String, LabWork> i : labsForOutput) {
-                    labWorkToOutput(i.getKey(), i.getValue());
-//        private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-//        private String name; //Поле не может быть null, Строка не может быть пустой
-//        private Coordinates coordinates; //Поле не может быть null
-//        private java.util.Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-//        private Long minimalPoint; //Поле может быть null, Значение поля должно быть больше 0
-//        private long personalQualitiesMinimum; //Значение поля должно быть больше 0
-//        private float averagePoint; //Значение поля должно быть больше 0
-//        private Difficulty difficulty; //Поле может быть null
-//        private Person author; //Поле может быть null
+                    answerBuilder.append(labWorkToOutput(i.getKey(), i.getValue()));
                 }
+                answer = answerBuilder.toString();
             } else throw new EmptyCollectionException();
 
         } catch (EmptyCollectionException emptyCollectionException) {
-            System.out.println("В коллекции нет элементов");
+            answer = "В коллекции нет элементов\n";
         }
+        return answer;
     }
 
-    public void showInfo() {
-        System.out.println(
+    public String showInfo() {
+        String ans = "";
+        ans +=
                 "Информация о коллекции:"
                         + "  Тип: Hashmap <String, LabWork>\n"
                         + "  Дата создания:" + creationDate + " \n"
-                        + "  Количество элементов:" + labWorks.size()
-        );
+                        + "  Количество элементов:" + labWorks.size() + " \n";
+        return ans;
     }
 
-    public void clearCollection() {
+    public String clearCollection() {
         labWorks.clear();
+        return "Коллекция очищена \n";
     }
 
     public Map.Entry<String, LabWork> findByID(int ID) throws WrongIDException, EmptyCollectionException {
@@ -132,13 +133,14 @@ public class CollectionManager {
         return null;
     }
 
-    public void removeKey(String key) {
+    public String removeKey(String key) {
         try {
             labWorks.remove(key);
+            return "Ключ успешно удалён\n";
         } catch (NullPointerException e) {
-            System.out.println("Ключ " + key + " не обнаружен");
+            return "Ключ " + key + " не обнаружен\n";
         } catch (Exception e) {
-            System.out.println("Ошибка. Невозможно удалить элемент по ключу " + key);
+            return "Ошибка. Невозможно удалить элемент по ключу " + key + "\n";
         }
     }
 
@@ -151,24 +153,24 @@ public class CollectionManager {
         return labWork;
     }
 
-    public void removeGreaterKey(String key) {
+    public String removeGreaterKey(String key) {
         try {
             if (key == null) throw new WrongArgumentException();
             if (!labWorks.isEmpty()) {
                 labWorks.entrySet().removeIf(stringLabWorkEntry -> key.compareTo(stringLabWorkEntry.getKey()) < 0);
+                return "Команда выполнена\n";
             } else throw new EmptyCollectionException();
-            System.out.println("Команда выполнена");
         } catch (EmptyCollectionException emptyCollectionException) {
-            System.out.println("В коллекции нет элементов");
+            return "В коллекции нет элементов\n";
         } catch (WrongArgumentException WrongArgumentException) {
-            System.out.println("Аргумент не может быть пустой строкой");
+            return "Аргумент не может быть пустой строкой\n";
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Непредвиденная ошибка");
+            return "Непредвиденная ошибка\n";
         }
     }
 
-    public void groupCountingByCrDate() {
+    public String groupCountingByCrDate() {
         try {
             if (!labWorks.isEmpty()) {
                 HashMap<LocalDate, Integer> labsHashMap = new HashMap<LocalDate, Integer>();
@@ -185,50 +187,56 @@ public class CollectionManager {
                         labsHashMap.put(labWork.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), sum);
                     }
                 }
+                StringBuilder s = new StringBuilder();
                 for (Map.Entry<LocalDate, Integer> i : labsHashMap.entrySet()) {
-                    System.out.println(i.getKey() + " - " + i.getValue());
+                    s.append(i.getKey()).append(" - ").append(i.getValue()).append("\n");
                 }
-            } else System.out.println("В коллекции нет ни одного элемента.");
+                return s.toString();
+            } else return "В коллекции нет ни одного элемента.\n";
         } catch (Exception e) {
-            System.out.println("Ошибка");
+            return "Ошибка\n";
         }
     }
 
-    public void filterGreaterThanAveragePoint(float averagePoint) {
+    public String filterGreaterThanAveragePoint(float averagePoint) {
         try {
+            StringBuilder s = new StringBuilder();
             if (!labWorks.isEmpty()) {
                 boolean trigger = false;
                 Set<Map.Entry<String, LabWork>> labsForOutput = labWorks.entrySet();
                 for (Map.Entry<String, LabWork> i : labsForOutput) {
                     if (i.getValue().getAveragePoint() > averagePoint) {
-                        labWorkToOutput(i.getKey(), i.getValue());
+                        s.append(labWorkToOutput(i.getKey(), i.getValue())).append("\n");
                         trigger = true;
                     }
                 }
                 if (!trigger) {
-                    System.out.println("Элементов с average_point большим " + averagePoint + " не обнаружено");
+                    return "Элементов с average_point большим " + averagePoint + " не обнаружено \n";
                 }
+                return s.toString();
             } else throw new EmptyCollectionException();
 
         } catch (EmptyCollectionException emptyCollectionException) {
-            System.out.println("В коллекции нет элементов");
+            return "В коллекции нет элементов";
         }
     }
 
-    public void printDescending() {
+    public String printDescending() {
         Vector<Map.Entry<String, LabWork>> labWorks1 = new Vector<Map.Entry<String, LabWork>>();
         try {
             if (!labWorks.isEmpty()) {
                 Set<Map.Entry<String, LabWork>> labs = labWorks.entrySet();
                 labWorks1.addAll(labs);
                 labWorks1.sort((o1, o2) -> -o1.getValue().getName().compareTo(o2.getValue().getName()));
+                StringBuilder s = new StringBuilder(";");
                 for (Map.Entry<String, LabWork> i : labWorks1) {
-                    labWorkToOutput(i.getKey(), i.getValue());
+                    s.append(labWorkToOutput(i.getKey(), i.getValue()));
                 }
+                return s.toString();
             } else throw new EmptyCollectionException();
 
         } catch (EmptyCollectionException emptyCollectionException) {
-            System.out.println("В коллекции нет элементов");
+            return "В коллекции нет элементов\n";
         }
     }
 

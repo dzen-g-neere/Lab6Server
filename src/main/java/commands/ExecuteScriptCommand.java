@@ -1,5 +1,7 @@
 package commands;
 
+import connection.ExchangeClass;
+
 /**
  * This is command 'execute_script'. It executes commands from script.
  */
@@ -14,7 +16,7 @@ public class ExecuteScriptCommand extends AbstractCommand implements Command{
      * Execute of 'execute_script' command.
      */
     @Override
-    public void execute(String argument) {
-
+    public String execute(String argument) {
+        return "";
     }
 }

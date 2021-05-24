@@ -1,6 +1,8 @@
 package run;
 
 import commands.*;
+import connection.Operator;
+import connection.Server;
 import utility.*;
 
 import java.net.InetSocketAddress;
@@ -19,10 +21,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        /*
 
         String path = System.getenv("envVariable");
-        if (path == null){
+        if (path == null) {
             path = "backup";
             System.out.println("Переменная окружения не найдена, записано значение по умолчанию - backup");
         }
@@ -51,28 +52,30 @@ public class Main {
                 new ReplaceIfLowerCommand(collectionManager, labWorkAsker),
                 new SaveCommand(collectionManager)
         );
-        ConsoleManager consoleManager = new ConsoleManager(userScanner, commandManager, labWorkAsker);
-        consoleManager.interectiveMode();
-
-         */
+//        ConsoleManager consoleManager = new ConsoleManager(userScanner, commandManager, labWorkAsker);
+//        consoleManager.interectiveMode();
+        Operator operator = new Operator(userScanner, envVariable, collectionManager, fileManager, labWorkAsker, commandManager);
+        Server server = new Server(operator);
+        server.process();
+/*
         try {
-        byte[] bytes = new byte[10];
-        SocketAddress address =
-                new InetSocketAddress(678);
-        DatagramChannel channel =
-                DatagramChannel.open();
-        channel.configureBlocking(false);
-        channel.bind(address);
-        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        address = channel.receive(buffer);
-            System.out.println("SMS received");
-        for (int i = 0; i < 10; i++)
-            bytes[i] *= 2;
-        buffer.flip();
-        channel.send(buffer, address);
+            byte[] bytes = new byte[10];
+            SocketAddress address =
+                    new InetSocketAddress(4888);
+            DatagramChannel channel =
+                    DatagramChannel.open();
+            channel.bind(address);
+            ByteBuffer buffer = ByteBuffer.wrap(bytes);
+            address = channel.receive(buffer);
+            for (int i = 0; i < 10; i++)
+                bytes[i] *= 2;
+            buffer.flip();
+            channel.send(buffer, address);
+
         } catch (Exception e){
             e.printStackTrace();
         }
+        */
     }
 
 }

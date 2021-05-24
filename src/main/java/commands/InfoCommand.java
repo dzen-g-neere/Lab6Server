@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import utility.CollectionManager;
 
 /**
@@ -16,7 +17,7 @@ public class InfoCommand extends AbstractCommand implements Command{
      * Execute of 'add' command.
      */
     @Override
-    public void execute(String argument) {
-        collectionManager.showInfo();
+    public String execute(String argument) {
+        return collectionManager.showInfo();
     }
 }

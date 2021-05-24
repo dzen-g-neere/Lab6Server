@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.WrongArgumentException;
 
 /**
@@ -14,15 +15,16 @@ public class HelpCommand extends AbstractCommand implements Command {
      * Execute of 'help' command.
      */
     @Override
-    public void execute(String argument) {
+    public String execute(String argument) {
         try {
             if (!argument.isEmpty()) {
                 throw new WrongArgumentException();
             }
         } catch (WrongArgumentException e) {
-            System.out.println("Используйте: '" + getName() + "'");
+            return "Используйте: '" + getName() + "'";
         } catch (Exception e) {
-            System.out.println("Ошибка. Повторите ввод.");
+            return "Ошибка. Повторите ввод.";
         }
+        return "";
     }
 }

@@ -7,7 +7,7 @@ public interface Command {
      * Interface for all commands.
      */
 
-    void execute(String argument) throws IncorrectScriptException;
+    String execute(String argument) throws IncorrectScriptException;
 
     String getName();
     String getDescription();

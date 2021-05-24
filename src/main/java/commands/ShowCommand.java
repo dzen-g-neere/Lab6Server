@@ -1,4 +1,6 @@
 package commands;
+
+import connection.ExchangeClass;
 import exceptions.WrongArgumentException;
 import utility.CollectionManager;
 
@@ -6,7 +8,7 @@ import utility.CollectionManager;
 /**
  * This is command 'show'. Prints all elements of collection.
  */
-public class ShowCommand extends AbstractCommand implements Command{
+public class ShowCommand extends AbstractCommand implements Command {
     private CollectionManager collectionManager;
 
     public ShowCommand(CollectionManager collectionManager) {
@@ -18,16 +20,16 @@ public class ShowCommand extends AbstractCommand implements Command{
      * Execute of 'show' command.
      */
     @Override
-    public void execute(String argument) {
+    public String execute(String argument) {
         try {
             if (!argument.isEmpty()) {
                 throw new WrongArgumentException();
             }
-            collectionManager.showCollection();
+            return collectionManager.showCollection();
         } catch (WrongArgumentException e) {
-            System.out.println("Используйте: '" + getName() + "'");
+            return "Используйте: '" + getName() + "'";
         } catch (Exception e) {
-            System.out.println("Ошибка. Повторите ввод.");
+            return "Ошибка. Повторите ввод.";
         }
     }
 }

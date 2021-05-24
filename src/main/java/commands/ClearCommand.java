@@ -1,5 +1,6 @@
 package commands;
 
+import connection.ExchangeClass;
 import exceptions.WrongArgumentException;
 import utility.CollectionManager;
 
@@ -16,17 +17,16 @@ public class ClearCommand extends AbstractCommand implements Command{
      * Execute of 'clear' command.
      */
     @Override
-    public void execute(String argument){
+    public String execute(String argument){
         try {
             if (!argument.isEmpty()) {
                 throw new WrongArgumentException();
             }
-            collectionManager.clearCollection();
-            System.out.println("Коллекция очищена");
+            return collectionManager.clearCollection();
         } catch (WrongArgumentException e) {
-            System.out.println("Некорректный аргумент. Используйте: '" + getName() + "'");
+            return "Некорректный аргумент. Используйте: '" + getName() + "'";
         } catch (Exception e) {
-            System.out.println("Ошибка. Повторите ввод.");
+            return "Ошибка. Повторите ввод.";
         }
     }
 }
