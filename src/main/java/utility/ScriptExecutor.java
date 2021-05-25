@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ScriptExecutor {
     private static int recurs = 0;
-    private static int recurs_max = 10;
+    private static int recurs_max = 100;
     private CommandManager commandManager;
     private LabWorkAsker labWorkAsker;
     private HashSet<String> scriptsInProcess = new HashSet<String>();

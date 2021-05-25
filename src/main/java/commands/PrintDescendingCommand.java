@@ -28,6 +28,7 @@ public class PrintDescendingCommand extends AbstractCommand implements Command {
         } catch (WrongArgumentException e) {
             return "Некорректный аргумент. Используйте: '" + getName() + "'";
         } catch (Exception e) {
+            e.printStackTrace();
             return "Ошибка. Повторите ввод.";
         }
     }

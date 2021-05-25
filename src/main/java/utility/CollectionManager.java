@@ -9,10 +9,8 @@ import labwork.Person;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class CollectionManager {
     private static int idCounter;
@@ -86,21 +84,17 @@ public class CollectionManager {
     }
 
     public String showCollection() {
-        String answer;
         try {
             if (!labWorks.isEmpty()) {
-                Set<Map.Entry<String, LabWork>> labsForOutput = labWorks.entrySet();
-                StringBuilder answerBuilder = new StringBuilder();
-                for (Map.Entry<String, LabWork> i : labsForOutput) {
-                    answerBuilder.append(labWorkToOutput(i.getKey(), i.getValue()));
-                }
-                answer = answerBuilder.toString();
+                StringBuilder s = new StringBuilder("");
+                Stream<LabWork> stream = labWorks.values().stream();
+                stream.sorted().forEach(x -> s.append(labWorkToOutput(x.getName(), x)));
+                return s.toString();
             } else throw new EmptyCollectionException();
 
         } catch (EmptyCollectionException emptyCollectionException) {
-            answer = "В коллекции нет элементов\n";
+            return "В коллекции нет элементов\n";
         }
-        return answer;
     }
 
     public String showInfo() {
@@ -118,7 +112,7 @@ public class CollectionManager {
         return "Коллекция очищена \n";
     }
 
-    public Map.Entry<String, LabWork> findByID(int ID) throws WrongIDException, EmptyCollectionException {
+    /*public Map.Entry<String, LabWork> findByID(int ID) throws WrongIDException, EmptyCollectionException {
         if (labWorks.isEmpty())
             throw new EmptyCollectionException();
         Set<Map.Entry<String, LabWork>> labs = labWorks.entrySet();
@@ -131,7 +125,7 @@ public class CollectionManager {
             }
         }
         return null;
-    }
+    }*/
 
     public String removeKey(String key) {
         try {
@@ -201,7 +195,7 @@ public class CollectionManager {
     public String filterGreaterThanAveragePoint(float averagePoint) {
         try {
             StringBuilder s = new StringBuilder();
-            if (!labWorks.isEmpty()) {
+            /*if (!labWorks.isEmpty()) {
                 boolean trigger = false;
                 Set<Map.Entry<String, LabWork>> labsForOutput = labWorks.entrySet();
                 for (Map.Entry<String, LabWork> i : labsForOutput) {
@@ -214,24 +208,23 @@ public class CollectionManager {
                     return "Элементов с average_point большим " + averagePoint + " не обнаружено \n";
                 }
                 return s.toString();
+            } else throw new EmptyCollectionException();*/
+            if (!labWorks.isEmpty()) {
+                Stream<LabWork> stream = labWorks.values().stream();
+                stream.filter(x -> x.getAveragePoint() > averagePoint).sorted().forEach(x -> s.append(labWorkToOutput(x.getName(), x)).append("\n"));
             } else throw new EmptyCollectionException();
-
+            return s.toString();
         } catch (EmptyCollectionException emptyCollectionException) {
             return "В коллекции нет элементов";
         }
     }
 
     public String printDescending() {
-        Vector<Map.Entry<String, LabWork>> labWorks1 = new Vector<Map.Entry<String, LabWork>>();
         try {
             if (!labWorks.isEmpty()) {
-                Set<Map.Entry<String, LabWork>> labs = labWorks.entrySet();
-                labWorks1.addAll(labs);
-                labWorks1.sort((o1, o2) -> -o1.getValue().getName().compareTo(o2.getValue().getName()));
-                StringBuilder s = new StringBuilder(";");
-                for (Map.Entry<String, LabWork> i : labWorks1) {
-                    s.append(labWorkToOutput(i.getKey(), i.getValue()));
-                }
+                StringBuilder s = new StringBuilder("");
+                Stream<LabWork> stream = labWorks.values().stream();
+                stream.sorted((o1, o2) -> -o1.compareTo(o2)).forEach(x -> s.append(labWorkToOutput(x.getName(), x)));
                 return s.toString();
             } else throw new EmptyCollectionException();
 
