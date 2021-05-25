@@ -26,7 +26,6 @@ public class ReplaceIfGreaterCommand extends AbstractCommand implements Command 
     @Override
     public String execute(String argument) throws IncorrectScriptException {
 
-
         LabWork labWorkOld;
         try {
             if (argument.isEmpty()) throw new WrongArgumentException();
@@ -47,7 +46,7 @@ public class ReplaceIfGreaterCommand extends AbstractCommand implements Command 
                 collectionManager.addLabWorkToCollection(labWorkNew.getName(), labWorkNew);
                 return "Замена успешна\n";
             }
-            return "Заменяемый элемент больше нового. Замена не произведенаю\n";
+            return "Заменяемый элемент больше нового. Замена не произведена\n";
         } catch (WrongArgumentException e) {
             return "Аргумент " + argument + " некорректен\n";
         }

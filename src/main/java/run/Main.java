@@ -5,6 +5,7 @@ import connection.Operator;
 import connection.Server;
 import utility.*;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -52,9 +53,15 @@ public class Main {
                 new ReplaceIfLowerCommand(collectionManager, labWorkAsker),
                 new SaveCommand(collectionManager)
         );
+        ConsoleManager consoleManager = new ConsoleManager(userScanner, commandManager, labWorkAsker);
+        ScriptExecutor scriptExecutor = new ScriptExecutor(commandManager, labWorkAsker);
+        ServerConsole serverConsole = new ServerConsole(commandManager, userScanner);
 //        ConsoleManager consoleManager = new ConsoleManager(userScanner, commandManager, labWorkAsker);
 //        consoleManager.interectiveMode();
-        Operator operator = new Operator(userScanner, envVariable, collectionManager, fileManager, labWorkAsker, commandManager);
+        Thread threadForReceiveFromTerminal = new Thread(serverConsole::interectiveMode);
+        Thread startReceiveFromServerTerminal = new Thread(threadForReceiveFromTerminal);
+        startReceiveFromServerTerminal.start();
+        Operator operator = new Operator(userScanner, envVariable, collectionManager, fileManager, labWorkAsker, commandManager, scriptExecutor);
         Server server = new Server(operator);
         server.process();
 /*

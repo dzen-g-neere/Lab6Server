@@ -71,10 +71,9 @@ public class Server {
             connect.socketAddress = channel.receive(connect.request);
             ExchangeClass e = deserialize(connect.request.array());
             connect.request.rewind();
-            System.out.println(new String(connect.request.array(), "UTF-8"));
+            System.out.println(e.getCommandName() + " " + e.getArgument() + "\n");
             exchangeClass = operator.startCommand(e);
-            ByteBuffer byteBuffer = ByteBuffer.wrap(serialize(exchangeClass));
-            connect.response = byteBuffer;
+            connect.response = ByteBuffer.wrap(serialize(exchangeClass));
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Что-то пошло не так. Server  Read.");
             e.printStackTrace();

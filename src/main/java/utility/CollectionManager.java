@@ -38,51 +38,51 @@ public class CollectionManager {
     }
 
     public String labWorkToOutput(String key, LabWork labWork) {
-        String answer = "";
-        answer += "key: " + key + "\n";
-        answer += "id: " + labWork.getId() + "\n";
-        answer += "    Название: " + labWork.getName() + "\n";
-        answer += "     Координаты:" + "\n";
-        answer += "        x: " + labWork.getCoordinates().getX() + "\n";
-        answer += "        y: " + labWork.getCoordinates().getY() + "\n";
-        answer += "    Дата создания: " + labWork.getCreationDate() + "\n";
-        answer += "    Минимальный балл: " + labWork.getMinimalPoint() + "\n";
-        answer += "    Мин. балл за л.к.: " + labWork.getPersonalQualitiesMinimum() + "\n";
-        answer += "    Средний балл: " + labWork.getAveragePoint() + "\n";
+        StringBuilder answer = new StringBuilder();
+        answer.append("key: ").append(key).append("\n");
+        answer.append("id: ").append(labWork.getId()).append("\n");
+        answer.append("    Название: ").append(labWork.getName()).append("\n");
+        answer.append("     Координаты:" + "\n");
+        answer.append("        x: ").append(labWork.getCoordinates().getX()).append("\n");
+        answer.append("        y: ").append(labWork.getCoordinates().getY()).append("\n");
+        answer.append("    Дата создания: ").append(labWork.getCreationDate()).append("\n");
+        answer.append("    Минимальный балл: ").append(labWork.getMinimalPoint()).append("\n");
+        answer.append("    Мин. балл за л.к.: ").append(labWork.getPersonalQualitiesMinimum()).append("\n");
+        answer.append("    Средний балл: ").append(labWork.getAveragePoint()).append("\n");
         try {
-            answer += "    Сложность: " + labWork.getDifficulty().getName() + "\n";
+            answer.append("    Сложность: ").append(labWork.getDifficulty().getName()).append("\n");
         } catch (Exception e) {
-            answer += "    Сложность: " + null + "\n";
+            answer.append("    Сложность: ").append("null").append("\n");
         }
         Person author = labWork.getAuthor();
         if (author != null) {
             Location authorLocation = author.getLocation();
-            answer += "    Автор:" + "\n";
-            answer += "        Имя: " + author.getName() + "\n";
-            answer += "        Рост: " + author.getHeight() + "\n";
+            answer.append("    Автор:" + "\n");
+            answer.append("        Имя: ").append(author.getName()).append("\n");
+            answer.append("        Рост: ").append(author.getHeight()).append("\n");
             try {
-                answer += "        Цвет глаз: " + author.getEyeColor().getName() + "\n";
+                answer.append("        Цвет глаз: ").append(author.getEyeColor().getName()).append("\n");
             } catch (Exception e) {
-                answer += "        Цвет глаз: " + null + "\n";
+                answer.append("        Цвет глаз: ").append("null").append("\n");
             }
             try {
-                answer += "        Цвет волос: " + author.getHairColor().getName() + "\n";
+                answer.append("        Цвет волос: ").append(author.getHairColor().getName()).append("\n");
             } catch (Exception e) {
-                answer += "        Цвет волос: " + null + "\n";
+                answer.append("        Цвет волос: ").append("null").append("\n");
             }
             try {
-                answer += "        Национальность: " + author.getNationality().getName() + "\n";
+                answer.append("        Национальность: ").append(author.getNationality().getName()).append("\n");
             } catch (Exception e) {
-                answer += "        Национальность: " + author.getNationality().getName() + "\n";
+                answer.append("        Национальность: ").append(author.getNationality().getName()).append("\n");
             }
-            answer += "        Местоположение: " + "\n";
-            answer += "            Локация: " + authorLocation.getName() + "\n";
-            answer += "                x: " + authorLocation.getX() + "\n";
-            answer += "                y: " + authorLocation.getY() + "\n";
-            answer += "                z: " + authorLocation.getZ() + "\n";
+            answer.append("        Местоположение: " + "\n");
+            answer.append("            Локация: ").append(authorLocation.getName()).append("\n");
+            answer.append("                x: ").append(authorLocation.getX()).append("\n");
+            answer.append("                y: ").append(authorLocation.getY()).append("\n");
+            answer.append("                z: ").append(authorLocation.getZ()).append("\n");
         } else
-            answer += "    Автор: null" + "\n" + "\n";
-        return answer;
+            answer.append("    Автор: null" + "\n" + "\n");
+        return answer.toString();
     }
 
     public String showCollection() {
@@ -145,7 +145,7 @@ public class CollectionManager {
     }
 
     public LabWork getByKey(String key) throws WrongArgumentException {
-        LabWork labWork = null;
+        LabWork labWork;
         if (labWorks.containsKey(key))
             labWork = labWorks.get(key);
         else throw new WrongArgumentException();

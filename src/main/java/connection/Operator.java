@@ -1,5 +1,6 @@
 package connection;
 
+import exceptions.WrongArgumentException;
 import labwork.LabWork;
 import utility.*;
 
@@ -12,29 +13,45 @@ public class Operator {
     private static CollectionManager collectionManager;
     private static LabWorkAsker asker;
     private static CommandManager commandManager;
+    private static ScriptExecutor scriptExecutor;
 
-    public Operator(Scanner userScanner, String myenv, CollectionManager collectionManager, FileManager fileManager, LabWorkAsker asker, CommandManager commandManager) {
+    public Operator(Scanner userScanner, String myenv, CollectionManager collectionManager, FileManager fileManager, LabWorkAsker asker, CommandManager commandManager, ScriptExecutor scriptExecutor) {
         Operator.userScanner = userScanner;
         Operator.myenv = myenv;
         Operator.fileManager = fileManager;
         Operator.collectionManager = collectionManager;
         Operator.asker = asker;
         Operator.commandManager = commandManager;
-
+        Operator.scriptExecutor = scriptExecutor;
     }
 
     public ExchangeClass startCommand(ExchangeClass exchangeClass) {
         try {
             String arg = exchangeClass.getArgument();
+            LabWork labWork;
             switch (exchangeClass.getCommandName()) {
-                case "insert":
-                    LabWork labWork = exchangeClass.getLabWork();
+                case "insert": {
+                    labWork = exchangeClass.getLabWork();
+                    labWork.setId(asker.askID());
                     collectionManager.addLabWorkToCollection(labWork.getName(), labWork);
-                    //exchangeClass.setAnswer(commandManager.insertLWToCollection(arg));
-                    break;
-                case "update":
-                    exchangeClass.setAnswer(commandManager.updateID(arg));
-                    break;
+                    exchangeClass.setAnswer("Элемент добавлен в коллекцию.\n");
+                }
+                break;
+                case "update": {
+                    labWork = exchangeClass.getLabWork();
+                    LabWork labWork1 = null;
+                    try {
+                        labWork1 = collectionManager.getByKey(labWork.getName());
+                    } catch (WrongArgumentException e) {
+                        exchangeClass.setAnswer("Элемента с данным ключом не обнаружено.\n");
+                    }
+                    if (labWork1 != null) {
+                        labWork.setId(labWork1.getId());
+                        collectionManager.addLabWorkToCollection(labWork.getName(), labWork);
+                        exchangeClass.setAnswer("Элемент обновлён.\n");
+                    }
+                }
+                break;
                 case "show":
                     exchangeClass.setAnswer(commandManager.showCollection(arg));
                     break;
@@ -50,21 +67,47 @@ public class Operator {
                 case "clear":
                     exchangeClass.setAnswer(commandManager.clear(arg));
                     break;
-                case "save":
-                    exchangeClass.setAnswer(commandManager.save(arg));
-                    break;
                 case "execute_script":
-                    exchangeClass.setAnswer("THIS COMMAND IS NOT WORKING");
+                    exchangeClass.setAnswer(exchangeClass.getCommandName() + " " + exchangeClass.getArgument() + "\n" + scriptExecutor.scriptMode(arg));
                     break;
-                case "exit":
-                    exchangeClass.setAnswer(commandManager.exit(arg));
-                    break;
-                case "replace_if_greater":
-                    exchangeClass.setAnswer(commandManager.replace_if_greater(arg));
-                    break;
-                case "replace_if_lowe":
-                    exchangeClass.setAnswer(commandManager.replace_if_lowe(arg));
-                    break;
+                case "replace_if_greater": {
+                    LabWork labWorkOld;
+                    try {
+                        String argument = exchangeClass.getArgument();
+                        if (argument.isEmpty()) throw new WrongArgumentException();
+                        labWorkOld = collectionManager.getByKey(argument);
+                        LabWork labWorkNew = exchangeClass.getLabWork();
+                        labWorkNew.setId(labWorkOld.getId());
+                        if (labWorkNew.compareTo(labWorkOld) > 0) {
+                            collectionManager.removeKey(argument);
+                            collectionManager.addLabWorkToCollection(labWorkNew.getName(), labWorkNew);
+                            exchangeClass.setAnswer("Замена успешна\n");
+                        } else
+                            exchangeClass.setAnswer("Заменяемый элемент больше нового. Замена не произведена\n");
+                    } catch (WrongArgumentException e) {
+                        exchangeClass.setAnswer("Аргумент некорректен\n");
+                    }
+                }
+                break;
+                case "replace_if_lowe": {
+                    LabWork labWorkOld;
+                    try {
+                        String argument = exchangeClass.getArgument();
+                        if (argument.isEmpty()) throw new WrongArgumentException();
+                        labWorkOld = collectionManager.getByKey(argument);
+                        LabWork labWorkNew = exchangeClass.getLabWork();
+                        labWorkNew.setId(labWorkOld.getId());
+                        if (labWorkNew.compareTo(labWorkOld) < 0) {
+                            collectionManager.removeKey(argument);
+                            collectionManager.addLabWorkToCollection(labWorkNew.getName(), labWorkNew);
+                            exchangeClass.setAnswer("Замена успешна\n");
+                        } else
+                            exchangeClass.setAnswer("Заменяемый элемент меньше нового. Замена не произведена\n");
+                    } catch (WrongArgumentException e) {
+                        exchangeClass.setAnswer("Аргумент некорректен\n");
+                    }
+                }
+                break;
                 case "remove_greater_key":
                     exchangeClass.setAnswer(commandManager.remove_greater_key(arg));
                     break;

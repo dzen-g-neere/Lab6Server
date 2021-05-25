@@ -2,6 +2,7 @@ package commands;
 
 import connection.ExchangeClass;
 import exceptions.IncorrectScriptException;
+import exceptions.WrongArgumentException;
 import labwork.LabWork;
 import utility.CollectionManager;
 import utility.LabWorkAsker;
@@ -25,7 +26,6 @@ public class UpdateIDCommand extends AbstractCommand implements Command {
     @Override
     public String execute(String argument) throws IncorrectScriptException {
         try {
-            int i = Integer.parseInt(argument);
             LabWork labWork = collectionManager.getByKey(argument);
             return collectionManager.addLabWorkToCollection(
                     argument,
@@ -42,7 +42,9 @@ public class UpdateIDCommand extends AbstractCommand implements Command {
                     )
             );
         } catch (NumberFormatException e) {
-            return "ID должен быть целым числом";
+            return "ID должен быть целым числом\n";
+        } catch (WrongArgumentException e){
+            return "Элемента с данным ID не существует\n";
         } catch (Exception e) {
             e.printStackTrace();
             return "Непредвиденная ошибка";

@@ -99,17 +99,13 @@ public class CommandManager {
      * Start execute of 'help' command.
      */
     public String help(String arg) {
-        if (arg.equals("")) {
-            StringBuilder s = new StringBuilder();
-            helpCommand.execute(arg);
-            for (Command command : commandArrayList) {
-                s.append(command.getName()).append(command.getDescription()).append("\n");
-            }
-            return s.toString();
-        } else {
-            helpCommand.execute(arg);
+
+        StringBuilder s = new StringBuilder();
+        helpCommand.execute(arg);
+        for (Command command : commandArrayList) {
+            s.append(command.getName()).append(command.getDescription()).append("\n");
         }
-        return "";
+        return s.toString();
     }
 
     /**
@@ -164,7 +160,7 @@ public class CommandManager {
     /**
      * Start execute of 'replace_if_greater' command.
      */
-    public String replace_if_greater(String arg) throws IncorrectScriptException{
+    public String replace_if_greater(String arg) throws IncorrectScriptException {
         try {
             return replaceIfGreaterCommand.execute(arg);
         } catch (IncorrectScriptException e) {
@@ -175,7 +171,7 @@ public class CommandManager {
     /**
      * Start execute of 'replace_if_lowe' command.
      */
-    public String replace_if_lowe(String arg) throws IncorrectScriptException{
+    public String replace_if_lowe(String arg) throws IncorrectScriptException {
         try {
             return replaceIfLowerCommand.execute(arg);
         } catch (IncorrectScriptException e) {
@@ -214,7 +210,7 @@ public class CommandManager {
     /**
      * Start execute of 'update' command.
      */
-    public String updateID(String arg) throws IncorrectScriptException{
+    public String updateID(String arg) throws IncorrectScriptException {
         return updateIDCommand.execute(arg);
     }
 }
